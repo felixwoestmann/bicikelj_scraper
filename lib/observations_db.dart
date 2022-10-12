@@ -1,4 +1,3 @@
-import 'package:bicikelj_parser/custom_logger.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'model/bike.dart';
@@ -14,18 +13,18 @@ class ObservationsDB {
   Future<void> createConnectionToDB() async {
     final databasePath = '../../../bikes.db';
     try {
-      CustomLogger.log('Try to create a connection to Database $databasePath');
+      print('Try to create a connection to Database $databasePath');
       databaseConnection = await databaseFactoryFfi.openDatabase(databasePath);
-      CustomLogger.log('Created Database connection successfully. Stored at ${databaseConnection.path}');
+      print('Created Database connection successfully. Stored at ${databaseConnection.path}');
     } catch (e) {
-      CustomLogger.log('Error while creating database: $e');
+      print('Error while creating database: $e');
     }
   }
 
   Future<void> createTableBikeObservations() async {
     final tableName = 'BikeObservations';
     try {
-      CustomLogger.log('Try to create table $tableName');
+      print('Try to create table $tableName');
       await databaseConnection.execute('''
       CREATE TABLE $tableName (
           id INTEGER PRIMARY KEY,
@@ -36,9 +35,9 @@ class ObservationsDB {
           bikeNumber NUMBER
       )
       ''');
-      CustomLogger.log('Created table $tableName successfully');
+      print('Created table $tableName successfully');
     } catch (e) {
-      CustomLogger.log('Error while creating table $tableName: $e');
+      print('Error while creating table $tableName: $e');
     }
   }
 
@@ -46,11 +45,11 @@ class ObservationsDB {
     try {
       await databaseConnection.insert('BikeObservations', bike.toMapForDB());
     } catch (e) {
-      CustomLogger.log('Error while inserting bike ${bike.number} into DB: $e');
+      print('Error while inserting bike ${bike.number} into DB: $e');
     }
   }
 
   Future<void> closeDatabaseConnection() => databaseConnection
       .close()
-      .onError((error, stackTrace) => CustomLogger.log('Error while closing database connection: $error'));
+      .onError((error, stackTrace) => print('Error while closing database connection: $error'));
 }

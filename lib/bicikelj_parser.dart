@@ -1,15 +1,14 @@
-import 'package:bicikelj_parser/custom_logger.dart';
 import 'package:bicikelj_parser/jcdecaux_api.dart';
 import 'package:bicikelj_parser/observations_db.dart';
 import 'package:dio/dio.dart';
 
 void main() async {
   final startTime = DateTime.now();
-  CustomLogger.log('Start querying bikes at ${startTime.toIso8601String()}');
+  print('Start querying bikes at ${startTime.toIso8601String()}');
   await queryAllStationsForBikesAndStoreThemInDb();
   final endTime = DateTime.now();
-  CustomLogger.log('Finished querying bikes at ${endTime.toIso8601String()}');
-  CustomLogger.log('The operation took ${endTime.difference(startTime).inSeconds} seconds');
+  print('Finished querying bikes at ${endTime.toIso8601String()}');
+  print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
 }
 
 Future<void> queryAllStationsForBikesAndStoreThemInDb() async {
@@ -17,7 +16,7 @@ Future<void> queryAllStationsForBikesAndStoreThemInDb() async {
   final api = setupApi();
   String accessToken = await api.getAccessToken(refreshToken: '0473a366-c216-4fec-a559-cab46e6a37e9');
   final stations = await api.getStations();
-  CustomLogger.log('Found ${stations.length} stations');
+  print('Found ${stations.length} stations');
   List<Future<void>> fetchAndStoreBikeOperations = [];
   for (var station in stations) {
     fetchAndStoreBikeOperations.add(api
