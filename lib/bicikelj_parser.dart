@@ -1,18 +1,29 @@
+import 'package:args/args.dart';
 import 'package:bicikelj_parser/jcdecaux_api.dart';
 import 'package:bicikelj_parser/observations_db.dart';
 import 'package:dio/dio.dart';
 
-void main() async {
+const output = 'output';
+
+void main(List<String> arguments) async {
+  print('Parsing arguments...');
+  final parser = ArgParser()..addOption(output, abbr: 'o');
+  ArgResults argResults = parser.parse(arguments);
+  String? dataBasePath = argResults[output];
+  if (dataBasePath == null) {
+    print('No output file specified. Provide with -o');
+    return;
+  }
   final startTime = DateTime.now();
   print('Start querying bikes at ${startTime.toIso8601String()}');
-  await queryAllStationsForBikesAndStoreThemInDb();
+  await queryAllStationsForBikesAndStoreThemInDb(dataBasePath);
   final endTime = DateTime.now();
   print('Finished querying bikes at ${endTime.toIso8601String()}');
   print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
 }
 
-Future<void> queryAllStationsForBikesAndStoreThemInDb() async {
-  final db = await setupDatabase();
+Future<void> queryAllStationsForBikesAndStoreThemInDb(String dataBasePath) async {
+  final db = await setupDatabase(dataBasePath);
   final api = setupApi();
   String accessToken = await api.getAccessToken(refreshToken: '0473a366-c216-4fec-a559-cab46e6a37e9');
   final stations = await api.getStations();
@@ -26,9 +37,9 @@ Future<void> queryAllStationsForBikesAndStoreThemInDb() async {
   await Future.wait(fetchAndStoreBikeOperations);
 }
 
-Future<ObservationsDB> setupDatabase() async {
+Future<ObservationsDB> setupDatabase(String dataBasePath) async {
   final db = ObservationsDB();
-  await db.createConnectionToDB();
+  await db.createConnectionToDB(dataBasePath);
   await db.createTableBikeObservations();
   return db;
 }

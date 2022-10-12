@@ -10,8 +10,7 @@ class ObservationsDB {
     sqfliteFfiInit();
   }
 
-  Future<void> createConnectionToDB() async {
-    final databasePath = '../../../bikes.db';
+  Future<void> createConnectionToDB(String databasePath) async {
     try {
       print('Try to create a connection to Database $databasePath');
       databaseConnection = await databaseFactoryFfi.openDatabase(databasePath);
