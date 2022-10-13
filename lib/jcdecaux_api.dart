@@ -23,6 +23,7 @@ class JCDecauxAPI {
       final List<Station> stations = (response.data as List).map((e) => Station.fromJson(e)).toList();
       return stations;
     } catch (e) {
+      print('Error while fetching stations: $e');
       return Future.error(e);
     }
   }
@@ -35,6 +36,7 @@ class JCDecauxAPI {
       final List<Bike> bikesAtStation = (response.data as List).map((e) => Bike.fromJson(e)).toList();
       return bikesAtStation;
     } catch (e) {
+      print('Error while fetching bikes at station $stationNumber');
       return Future.error(e);
     }
   }
@@ -48,6 +50,7 @@ class JCDecauxAPI {
       );
       return response.data['accessToken'];
     } catch (e) {
+      print('An error occurred obtaining an accessToken. Check RefreshToken and maybe replace it');
       return Future.error(e);
     }
   }
