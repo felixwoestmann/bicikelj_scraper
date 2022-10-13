@@ -1,16 +1,26 @@
 import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
 import 'package:bicikelj_parser/analysis/model/journey.dart';
+import 'package:bicikelj_parser/jcdecaux_api.dart';
 import 'package:bicikelj_parser/observations_db.dart';
 import 'package:collection/collection.dart';
+
+import '../model/station.dart';
 
 void main() async {
   final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB();
   List<Journey> journeysGroupedByBike = observationsGroupedByBike
       .map((obs) => createChunksForSingleBikeData(obs)) // Split Lists of Observations when Station of a Bike changes
       .map((chunks) => createJourneysFromChunks(chunks)) // Takes the generated chunks and generate journey objects
-      .expand((element) => element) // flatten List<List<Journey>> to List<Journey>
+      .expand((e) => e) // flatten List<List<Journey>> to List<Journey>
       .toList();
+
   print('There are ${journeysGroupedByBike.length} journeys');
+
+  final stations = await loadStationData();
+  final journeysWithLocation = addLocationDataFromStationsToJourneys(journeysGroupedByBike, stations);
+
+  print(
+      'There are ${journeysWithLocation.where((element) => element.startLocationLat == null).toList().length} journeys without location data');
 }
 
 Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB() async {
@@ -45,3 +55,16 @@ List<Journey> createJourneysFromChunks(List<List<BikeObservation>> chunks) {
   }
   return journeys;
 }
+
+Future<List<Station>> loadStationData() => JCDecauxAPI.setupApi().getStations();
+
+List<Journey> addLocationDataFromStationsToJourneys(List<Journey> journeysWithOutLocation, List<Station> stations) =>
+    journeysWithOutLocation.map((journey) {
+      final stationStart = stations.firstWhere((station) => station.number == journey.stationStart);
+      final stationEnd = stations.firstWhere((station) => station.number == journey.stationEnd);
+      journey.startLocationLat = stationStart.position.lat;
+      journey.startLocationLon = stationStart.position.lng;
+      journey.endLocationLat = stationEnd.position.lat;
+      journey.endLocationLon = stationEnd.position.lng;
+      return journey;
+    }).toList();

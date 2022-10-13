@@ -4,6 +4,10 @@ class Journey {
   final int bikeNumber;
   final int stationStart;
   final int stationEnd;
+  String? startLocationLat;
+  String? startLocationLon;
+  String? endLocationLat;
+  String? endLocationLon;
 
   Journey({
     required this.timestampStart,

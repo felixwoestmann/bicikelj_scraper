@@ -10,6 +10,13 @@ class JCDecauxAPI {
 
   JCDecauxAPI({required this.apiKey, required this.dio, required this.contract});
 
+  static JCDecauxAPI setupApi() {
+    const String apiKey = 'd14e5c3e8f5ddb62e49354b321294d20b137e143';
+    const String contract = 'Ljubljana';
+    final api = JCDecauxAPI(apiKey: apiKey, contract: contract, dio: Dio());
+    return api;
+  }
+
   Future<List<Station>> getStations() async {
     try {
       final response = await dio.get('https://api.jcdecaux.com/vls/v3/stations?contract=$contract&apiKey=$apiKey');
