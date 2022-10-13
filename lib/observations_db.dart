@@ -1,3 +1,4 @@
+import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'model/bike.dart';
@@ -51,4 +52,27 @@ class ObservationsDB {
   Future<void> closeDatabaseConnection() => databaseConnection
       .close()
       .onError((error, stackTrace) => print('Error while closing database connection: $error'));
+
+  // Analysis
+
+  Future<List<BikeObservation>> getAllObservationsForSingleBike(int bikeNumber) async {
+    final observations = await databaseConnection.query('BikeObservations', where: 'bikeNumber = $bikeNumber');
+    final observationsCasted = observations.map((e) => BikeObservation.fromMap(e));
+    List<BikeObservation> observationsList = [];
+    for (final observation in observationsCasted) {
+      observationsList.add(observation);
+    }
+    return observationsList;
+  }
+
+  Future<List<BikeObservation>> getObservationsFromDB() async {
+    final observations = await databaseConnection.query('BikeObservations');
+    return observations.map((e) => BikeObservation.fromMap(e)).toList();
+  }
+
+  Future<Set<int>> getAllUniqueBikeNumbers() async {
+    final observations = await databaseConnection.query('BikeObservations');
+    var numbers = observations.map((e) => e['bikeNumber'] as int).toSet();
+    return {...numbers};
+  }
 }
