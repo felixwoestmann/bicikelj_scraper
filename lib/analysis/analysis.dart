@@ -1,5 +1,6 @@
 import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
 import 'package:bicikelj_parser/analysis/model/journey.dart';
+import 'package:bicikelj_parser/analysis/model/journey_db.dart';
 import 'package:bicikelj_parser/jcdecaux_api.dart';
 import 'package:bicikelj_parser/observations_db.dart';
 import 'package:collection/collection.dart';
@@ -21,6 +22,10 @@ void main() async {
 
   print(
       'There are ${journeysWithLocation.where((element) => element.startLocationLat == null).toList().length} journeys without location data');
+  print('Create connection to DB and table');
+  final db = await setupDatabase('journey.db');
+  final insertOperations = journeysWithLocation.map(db.insertJourneyIntoDB).toList();
+  await Future.wait(insertOperations);
 }
 
 Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB() async {
@@ -68,3 +73,10 @@ List<Journey> addLocationDataFromStationsToJourneys(List<Journey> journeysWithOu
       journey.endLocationLon = stationEnd.position.lng;
       return journey;
     }).toList();
+
+Future<JourneyDB> setupDatabase(String dataBasePath) async {
+  final db = JourneyDB();
+  await db.createConnectionToDB(dataBasePath);
+  await db.createTableJourneys();
+  return db;
+}

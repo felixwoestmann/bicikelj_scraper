@@ -16,4 +16,16 @@ class Journey {
     required this.stationStart,
     required this.stationEnd,
   });
+
+  Map<String, dynamic> toMapForDB() => {
+        'timestampStart': timestampStart.toString(),
+        'timestampEnd': timestampEnd.toString(),
+        'bikeNumber': bikeNumber,
+        'stationStart': stationStart,
+        'stationEnd': stationEnd,
+        'startLocationLat': startLocationLat,
+        'startLocationLon': startLocationLon,
+        'endLocationLat': endLocationLat,
+        'endLocationLon': endLocationLon,
+      };
 }
