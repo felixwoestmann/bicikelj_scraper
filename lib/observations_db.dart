@@ -37,7 +37,7 @@ class ObservationsDB {
       ''');
       print('Created table $tableName successfully');
     } catch (e) {
-      print('Error while creating table $tableName: $e');
+      print('Error while creating table $tableName');
     }
   }
 
