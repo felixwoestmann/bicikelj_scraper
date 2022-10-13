@@ -4,23 +4,22 @@ import 'package:bicikelj_parser/observations_db.dart';
 import 'package:collection/collection.dart';
 
 void main() async {
-  await loadDataFromDB();
+  final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB();
+  List<Journey> journeysGroupedByBike = observationsGroupedByBike
+      .map((obs) => createChunksForSingleBikeData(obs)) // Split Lists of Observations when Station of a Bike changes
+      .map((chunks) => createJourneysFromChunks(chunks)) // Takes the generated chunks and generate journey objects
+      .expand((element) => element) // flatten List<List<Journey>> to List<Journey>
+      .toList();
+  print('There are ${journeysGroupedByBike.length} journeys');
 }
 
-Future<void> loadDataFromDB() async {
+Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB() async {
   final db = ObservationsDB();
   await db.createConnectionToDB('/Users/felix/Desktop/bike_observations.db');
-/*  final uniqueBikeNumbers = await db.getAllUniqueBikeNumbers();
-  for (final bikeNumber in uniqueBikeNumbers) {
-    final observations = await db.getAllObservationsForSingleBike(bikeNumber);
-    print('Bike $bikeNumber has ${observations.length} observations');
-  }*/
-  final observations = await db.getAllObservationsForSingleBike(996);
-  observations.forEach(print);
-  final chunks = createChunksForSingleBikeData(observations);
-  print('There are  ${chunks.length} chunks');
-  // for i loop to always take two chunks
-  List<Journey> journeys = createJourneysFromChunks(chunks);
+  final uniqueBikeNumbers = await db.getAllUniqueBikeNumbers();
+  List<Future<List<BikeObservation>>> observationsGroupedByBikes =
+      uniqueBikeNumbers.map((bikeNumber) => db.getAllObservationsForSingleBike(bikeNumber)).toList();
+  return await Future.wait(observationsGroupedByBikes);
 }
 
 List<List<BikeObservation>> createChunksForSingleBikeData(List<BikeObservation> observations) =>
