@@ -25,7 +25,7 @@ void main(List<String> arguments) async {
 Future<void> queryAllStationsForBikesAndStoreThemInDb(String dataBasePath) async {
   final db = await setupDatabase(dataBasePath);
   final api = setupApi();
-  String accessToken = await api.getAccessToken(refreshToken: 'eb9eec19-7929-4b53-a68a-24d9cedfa652');
+  String accessToken = await api.getAccessToken(refreshToken: 'b4a546e9-ff2b-4176-9e6e-76460d7ba4ef');
   final stations = await api.getStations();
   print('Found ${stations.length} stations');
   List<Future<void>> fetchAndStoreBikeOperations = [];
