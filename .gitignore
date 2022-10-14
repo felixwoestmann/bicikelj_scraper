@@ -175,3 +175,4 @@ fabric.properties
 
 .DS_Store
 .idea/
+*.db
