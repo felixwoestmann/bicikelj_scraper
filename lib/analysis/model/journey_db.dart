@@ -35,7 +35,9 @@ class JourneyDB {
           startLocationLat TEXT,
           startLocationLon TEXT,
           endLocationLat TEXT,
-          endLocationLon TEXT
+          endLocationLon TEXT,
+          distanceInMeters NUMBER,
+          timeInMinutes NUMBER
       )
       ''');
       print('Created table $tableName successfully');

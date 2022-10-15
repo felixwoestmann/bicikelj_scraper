@@ -2,10 +2,9 @@ import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
 import 'package:bicikelj_parser/analysis/model/journey.dart';
 import 'package:bicikelj_parser/analysis/model/journey_db.dart';
 import 'package:bicikelj_parser/jcdecaux_api.dart';
+import 'package:bicikelj_parser/model/station.dart';
 import 'package:bicikelj_parser/observations_db.dart';
 import 'package:collection/collection.dart';
-
-import '../model/station.dart';
 
 void main() async {
   final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB();
@@ -67,10 +66,11 @@ List<Journey> addLocationDataFromStationsToJourneys(List<Journey> journeysWithOu
     journeysWithOutLocation.map((journey) {
       final stationStart = stations.firstWhere((station) => station.number == journey.stationStart);
       final stationEnd = stations.firstWhere((station) => station.number == journey.stationEnd);
-      journey.startLocationLat = stationStart.position.lat;
-      journey.startLocationLon = stationStart.position.lng;
-      journey.endLocationLat = stationEnd.position.lat;
-      journey.endLocationLon = stationEnd.position.lng;
+      journey.setLocation(
+          startLocationLat: stationStart.position.lat,
+          startLocationLon: stationStart.position.lng,
+          endLocationLat: stationEnd.position.lat,
+          endLocationLon: stationEnd.position.lng);
       return journey;
     }).toList();
 

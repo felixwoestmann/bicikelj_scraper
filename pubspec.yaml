@@ -1,7 +1,6 @@
 name: bicikelj_parser
-description: A sample command-line application.
+description: A application to query bicycle data from Biciklej.si
 version: 1.0.0
-# homepage: https://www.example.com
 
 environment:
   sdk: '>=2.17.6 <3.0.0'
@@ -12,6 +11,8 @@ dependencies:
   path: ^1.8.2
   logger: ^1.1.0
   args: ^2.3.1
+  latlong2: ^0.8.1
+  collection: ^1.17.0
 
 dev_dependencies:
   lints: ^2.0.0
