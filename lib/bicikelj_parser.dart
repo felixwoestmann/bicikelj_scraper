@@ -6,20 +6,24 @@ import 'package:dio/dio.dart';
 const output = 'output';
 
 void main(List<String> arguments) async {
+  final databasePath = parseDataBasePathFromArguments(arguments);
+  final startTime = DateTime.now();
+  print('Start querying bikes at ${startTime.toIso8601String()}');
+  await queryAllStationsForBikesAndStoreThemInDb(databasePath);
+  final endTime = DateTime.now();
+  print('Finished querying bikes at ${endTime.toIso8601String()}');
+  print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
+}
+
+String parseDataBasePathFromArguments(List<String> arguments) {
   print('Parsing arguments...');
   final parser = ArgParser()..addOption(output, abbr: 'o');
   ArgResults argResults = parser.parse(arguments);
   String? dataBasePath = argResults[output];
   if (dataBasePath == null) {
-    print('No output file specified. Provide with -o');
-    return;
+    throw Exception('No output file specified. Provide with -o');
   }
-  final startTime = DateTime.now();
-  print('Start querying bikes at ${startTime.toIso8601String()}');
-  await queryAllStationsForBikesAndStoreThemInDb(dataBasePath);
-  final endTime = DateTime.now();
-  print('Finished querying bikes at ${endTime.toIso8601String()}');
-  print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
+  return dataBasePath;
 }
 
 Future<void> queryAllStationsForBikesAndStoreThemInDb(String dataBasePath) async {
