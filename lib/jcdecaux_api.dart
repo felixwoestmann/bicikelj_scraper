@@ -55,6 +55,20 @@ class JCDecauxAPI {
     }
   }
 
+  Future<String> getRefeshToken() {
+    try {
+      final response = await dio.post(
+        'https://api.cyclocity.fr/auth/environments/PRD/client_tokens',
+        data: {'refreshToken': refreshToken},
+        options: Options(headers: _getHeadersForAccessTokenRequest()),
+      );
+      return response.data['accessToken'];
+    } catch (e) {
+      print('An error occurred obtaining an accessToken. Check RefreshToken and maybe replace it');
+      return Future.error(e);
+    }
+  }
+
   Map<String, dynamic> _createHeaderForBikesRequest(String accessToken) => {
         'Authorization': 'Taknv1 $accessToken',
         'Accept': 'application/vnd.bikes.v3+json',
