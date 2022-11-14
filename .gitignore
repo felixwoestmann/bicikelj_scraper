@@ -177,3 +177,5 @@ fabric.properties
 .idea/
 *.db
 .Rproj.user
+
+.local-chromium/
