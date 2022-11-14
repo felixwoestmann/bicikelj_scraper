@@ -1,7 +1,6 @@
+import 'package:bicikelj_parser/scraping/model/station.dart';
+import 'package:bicikelj_parser/shared/bike.dart';
 import 'package:dio/dio.dart';
-
-import 'model/bike.dart';
-import 'model/station.dart';
 
 class JCDecauxAPI {
   final String apiKey;
@@ -45,20 +44,6 @@ class JCDecauxAPI {
     try {
       final response = await dio.post(
         'https://api.cyclocity.fr/auth/access_tokens',
-        data: {'refreshToken': refreshToken},
-        options: Options(headers: _getHeadersForAccessTokenRequest()),
-      );
-      return response.data['accessToken'];
-    } catch (e) {
-      print('An error occurred obtaining an accessToken. Check RefreshToken and maybe replace it');
-      return Future.error(e);
-    }
-  }
-
-  Future<String> getRefeshToken() {
-    try {
-      final response = await dio.post(
-        'https://api.cyclocity.fr/auth/environments/PRD/client_tokens',
         data: {'refreshToken': refreshToken},
         options: Options(headers: _getHeadersForAccessTokenRequest()),
       );

@@ -1,7 +1,6 @@
-import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
+import 'package:bicikelj_parser/shared/bike.dart';
+import 'package:bicikelj_parser/shared/bike_obervation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
-import 'model/bike.dart';
 
 class ObservationsDB {
   // ignore: prefer_typing_uninitialized_variables

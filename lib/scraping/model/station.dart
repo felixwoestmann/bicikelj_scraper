@@ -1,5 +1,5 @@
-import 'package:bicikelj_parser/model/position.dart';
-import 'package:bicikelj_parser/model/stand.dart';
+import 'package:bicikelj_parser/scraping/model/position.dart';
+import 'package:bicikelj_parser/scraping/model/stand.dart';
 
 class Station {
   final int number;

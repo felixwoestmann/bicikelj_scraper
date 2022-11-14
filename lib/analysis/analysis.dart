@@ -1,9 +1,9 @@
-import 'package:bicikelj_parser/analysis/model/bike_obervation.dart';
 import 'package:bicikelj_parser/analysis/model/journey.dart';
 import 'package:bicikelj_parser/analysis/model/journey_db.dart';
-import 'package:bicikelj_parser/jcdecaux_api.dart';
-import 'package:bicikelj_parser/model/station.dart';
-import 'package:bicikelj_parser/observations_db.dart';
+import 'package:bicikelj_parser/scraping/model/station.dart';
+import 'package:bicikelj_parser/shared/bike_obervation.dart';
+import 'package:bicikelj_parser/shared/jcdecaux_api.dart';
+import 'package:bicikelj_parser/shared/observations_db.dart';
 import 'package:collection/collection.dart';
 
 void main() async {

@@ -1,4 +1,4 @@
-import 'package:bicikelj_parser/model/rating.dart';
+import 'package:bicikelj_parser/shared/rating.dart';
 
 class Bike {
   final String id;
