@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 
 class PushNotificationDispatcher {
-  static void dispatchNotification(String message, String topic) {
+  static void dispatchNotification(String message, String topic) async {
+    print('Dispatching notification: $message');
     final dio = Dio();
-    dio.post('https://ntfy.sh/$topic', data: message);
+    await dio.post('https://ntfy.sh/$topic', data: message);
   }
 }
