@@ -13,7 +13,7 @@ void main(List<String> arguments) async {
     final startTime = DateTime.now();
     print('Start querying bikes at ${startTime.toIso8601String()}');
     print('Obtaining Refresh Token...');
-    final refreshToken = await FakeBrowser.obtainRefreshToken('ded');
+    final refreshToken = await FakeBrowser.obtainRefreshToken('cpr_refresh_token');
     print('Obtained refresh token: $refreshToken');
     await queryAllStationsForBikesAndStoreThemInDb(databasePath, refreshToken);
     final endTime = DateTime.now();
