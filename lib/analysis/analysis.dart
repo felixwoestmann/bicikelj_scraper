@@ -29,7 +29,7 @@ void main() async {
 
 Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB() async {
   final db = ObservationsDB();
-  await db.createConnectionToDB('/Users/felix/Desktop/bicikle_scraper_output/20221014_bike_observations.db');
+  await db.createConnectionToDB('/Users/felix/Desktop/bicikle_scraper_output/20221015_bike_observations.db');
   final uniqueBikeNumbers = await db.getAllUniqueBikeNumbers();
   List<Future<List<BikeObservation>>> observationsGroupedByBikes =
       uniqueBikeNumbers.map((bikeNumber) => db.getAllObservationsForSingleBike(bikeNumber)).toList();
