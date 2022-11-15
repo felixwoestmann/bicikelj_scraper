@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 const output = 'output';
 
 void main(List<String> arguments) async {
+  print('==================================================');
   print('Start script at ${DateTime.now().toIso8601String()}');
   final databasePath = parseDataBasePathFromArguments(arguments);
   try {
