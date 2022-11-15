@@ -8,8 +8,9 @@ import 'package:dio/dio.dart';
 const output = 'output';
 
 void main(List<String> arguments) async {
+  print('Start script at ${DateTime.now().toIso8601String()}');
+  final databasePath = parseDataBasePathFromArguments(arguments);
   try {
-    final databasePath = parseDataBasePathFromArguments(arguments);
     final startTime = DateTime.now();
     print('Start querying bikes at ${startTime.toIso8601String()}');
     print('Obtaining Refresh Token...');

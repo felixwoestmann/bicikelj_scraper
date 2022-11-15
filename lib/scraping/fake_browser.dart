@@ -9,7 +9,7 @@ class FakeBrowser {
     );
     var page = await browser.newPage();
     // Go to a page and wait to be fully loaded, then get LocalStorage
-    await page.goto('https://www.bicikelj.si/en/mapping', wait: Until.networkIdle);
+    await page.goto('https://www.bicikelj.si/en/mapping', wait: Until.networkIdle, timeout: Duration(seconds: 40));
     Map<String, dynamic> localStorage = await page.evaluate('() =>  Object.assign({}, window.localStorage)');
     await browser.close();
     if (localStorage.containsKey(refreshTokenKey)) {
