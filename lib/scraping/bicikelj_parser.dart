@@ -1,25 +1,26 @@
 import 'package:args/args.dart';
-import 'package:bicikelj_parser/scraping/fake_browser.dart';
 import 'package:bicikelj_parser/scraping/push_notification_dispatcher.dart';
 import 'package:bicikelj_parser/shared/jcdecaux_api.dart';
 import 'package:bicikelj_parser/shared/observations_db.dart';
 import 'package:dio/dio.dart';
 
+import 'fake_browser.dart';
+
 const output = 'output';
 
 void main(List<String> arguments) async {
   print('==================================================');
-  print('Start script at ${DateTime.now().toIso8601String()}');
+  print('Start script at ${formatDateTime(DateTime.now())}');
   final databasePath = parseDataBasePathFromArguments(arguments);
   try {
     final startTime = DateTime.now();
-    print('Start querying bikes at ${startTime.toIso8601String()}');
+    print('Start querying bikes at ${formatDateTime(startTime)}');
     print('Obtaining Refresh Token...');
     final refreshToken = await FakeBrowser.obtainRefreshToken('cpr_refresh_token');
     print('Obtained refresh token: $refreshToken');
     await queryAllStationsForBikesAndStoreThemInDb(databasePath, refreshToken);
     final endTime = DateTime.now();
-    print('Finished querying bikes at ${endTime.toIso8601String()}');
+    print('Finished querying bikes at ${formatDateTime(endTime)}');
     print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
   } catch (e) {
     print('An error occurred: $e');
@@ -27,6 +28,9 @@ void main(List<String> arguments) async {
         'An error occurred: $e', 'JRMqduFxJAPb4TppveACvzGJFgCvkzg73fjQWUPN6U');
   }
 }
+
+String formatDateTime(DateTime dateTime) =>
+    '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
 
 String parseDataBasePathFromArguments(List<String> arguments) {
   print('Parsing arguments...');
