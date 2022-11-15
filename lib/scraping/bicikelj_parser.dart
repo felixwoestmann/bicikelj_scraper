@@ -20,6 +20,7 @@ void main(List<String> arguments) async {
     print('Obtained refresh token: $refreshToken');
     await queryAllStationsForBikesAndStoreThemInDb(databasePath, refreshToken);
     final endTime = DateTime.now();
+
     print('Finished querying bikes at ${formatDateTime(endTime)}');
     print('The operation took ${endTime.difference(startTime).inSeconds} seconds');
   } catch (e) {
@@ -30,7 +31,7 @@ void main(List<String> arguments) async {
 }
 
 String formatDateTime(DateTime dateTime) =>
-    '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}';
 
 String parseDataBasePathFromArguments(List<String> arguments) {
   print('Parsing arguments...');
