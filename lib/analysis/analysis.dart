@@ -7,7 +7,8 @@ import 'package:bicikelj_parser/shared/observations_db.dart';
 import 'package:collection/collection.dart';
 
 void main() async {
-  final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB();
+  const pathToDb = '/Users/felix/Downloads/20221125_bike_observations.db';
+  final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB(pathToDb);
   List<Journey> journeysGroupedByBike = observationsGroupedByBike
       .map((obs) => createChunksForSingleBikeData(obs)) // Split Lists of Observations when Station of a Bike changes
       .map((chunks) => createJourneysFromChunks(chunks)) // Takes the generated chunks and generate journey objects
@@ -27,9 +28,9 @@ void main() async {
   await Future.wait(insertOperations);
 }
 
-Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB() async {
+Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB(String path) async {
   final db = ObservationsDB();
-  await db.createConnectionToDB('/Users/felix/Desktop/bicikle_scraper_output/20221015_bike_observations.db');
+  await db.createConnectionToDB(path);
   final uniqueBikeNumbers = await db.getAllUniqueBikeNumbers();
   List<Future<List<BikeObservation>>> observationsGroupedByBikes =
       uniqueBikeNumbers.map((bikeNumber) => db.getAllObservationsForSingleBike(bikeNumber)).toList();
