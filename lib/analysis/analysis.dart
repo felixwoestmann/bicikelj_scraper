@@ -5,6 +5,7 @@ import 'package:bicikelj_parser/shared/bike_obervation.dart';
 import 'package:bicikelj_parser/shared/jcdecaux_api.dart';
 import 'package:bicikelj_parser/shared/observations_db.dart';
 import 'package:collection/collection.dart';
+import 'package:quiver/iterables.dart';
 
 void main() async {
   const pathToDb = '/Users/felix/Downloads/20221125_bike_observations.db';
@@ -23,9 +24,12 @@ void main() async {
   print(
       'There are ${journeysWithLocation.where((element) => element.startLocationLat == null).toList().length} journeys without location data');
   print('Create connection to DB and table');
+
   final db = await setupDatabase('journey.db');
-  final insertOperations = journeysWithLocation.map(db.insertJourneyIntoDB).toList();
-  await Future.wait(insertOperations);
+
+  for (final part in partition(journeysWithLocation, 500)) {
+    await db.insertJourneyInBatches(part);
+  }
 }
 
 Future<List<List<BikeObservation>>> loadObservationsGroupedByBikeFromDB(String path) async {

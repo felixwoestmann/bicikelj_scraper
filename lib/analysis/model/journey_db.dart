@@ -46,6 +46,16 @@ class JourneyDB {
     }
   }
 
+  Future<void> insertJourneyInBatches(List<Journey> journeys) async {
+    try {
+      final batch = databaseConnection.batch();
+      journeys.map((journey) => journey.toMapForDB()).forEach((journeyMap) => batch.insert('Journeys', journeyMap));
+      await batch.commit(noResult: true);
+    } catch (e) {
+      print('Error while inserting ${journeys.length} journeys into DB: $e');
+    }
+  }
+
   Future<void> insertJourneyIntoDB(Journey journey) async {
     try {
       await databaseConnection.insert('Journeys', journey.toMapForDB());

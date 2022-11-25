@@ -56,7 +56,8 @@ class ObservationsDB {
 
   Future<List<BikeObservation>> getAllObservationsForSingleBike(int bikeNumber) async {
     final observations = await databaseConnection.query('BikeObservations', where: 'bikeNumber = $bikeNumber');
-    return observations.map((e) => BikeObservation.fromMap(e)).toList();
+    final observationsMapped = observations.map((e) => BikeObservation.fromMap(e)).toList();
+    return [...observationsMapped];
   }
 
   Future<List<BikeObservation>> getObservationsFromDB() async {
