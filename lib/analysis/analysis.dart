@@ -8,7 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:quiver/iterables.dart';
 
 void main() async {
-  const pathToDb = '/Users/felix/Downloads/20221125_bike_observations.db';
+  const pathToDb = '/Users/felix/Downloads/20221201_bike_observations.db';
   final observationsGroupedByBike = await loadObservationsGroupedByBikeFromDB(pathToDb);
   List<Journey> journeysGroupedByBike = observationsGroupedByBike
       .map((obs) => createChunksForSingleBikeData(obs)) // Split Lists of Observations when Station of a Bike changes
